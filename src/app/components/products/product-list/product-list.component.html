@@ -1,7 +1,7 @@
 <div class="container mt-4">
   <h2>Productos</h2>
 
-  <div class="mb-3">
+  <div class="mb-3" *ngIf="isSuperAdmin">
     <input [(ngModel)]="newProductName" class="form-control mb-2" placeholder="Nombre del producto">
     <input type="number" [(ngModel)]="newProductPrice" class="form-control mb-2" placeholder="Precio">
     <input type="number" [(ngModel)]="newProductCategoryId" class="form-control mb-2" placeholder="ID Categoría">
@@ -15,7 +15,7 @@
         <th>Nombre</th>
         <th>Precio</th>
         <th>ID Categoría</th>
-        <th>Acciones</th>
+        <th *ngIf="isSuperAdmin">Acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -39,7 +39,7 @@
             <input type="number" [(ngModel)]="editProductCategoryId" class="form-control">
           </div>
         </td>
-        <td>
+        <td *ngIf="isSuperAdmin">
           <button *ngIf="editProductId !== prod.id" class="btn btn-warning btn-sm" (click)="startEdit(prod)">Editar</button>
           <button *ngIf="editProductId === prod.id" class="btn btn-success btn-sm" (click)="updateProduct()">Guardar</button>
           <button *ngIf="editProductId === prod.id" class="btn btn-secondary btn-sm" (click)="cancelEdit()">Cancelar</button>

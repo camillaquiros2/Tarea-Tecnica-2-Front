@@ -36,8 +36,23 @@ export class LoginComponent {
     }
     if (this.emailModel.valid && this.passwordModel.valid) {
       this.authService.login(this.loginForm).subscribe({
-        next: () => this.router.navigateByUrl('/app/dashboard'),
-        error: (err: any) => (this.loginError = err.error.description),
+        next: (response: any) => {
+          console.log('LOGIN RESPONSE:', response);
+
+          if (response?.authUser?.role?.name) {
+            localStorage.setItem('role', response.authUser.role.name);
+            localStorage.setItem('email', response.authUser.email);
+            console.log(`Role guardado en localStorage: ${response.authUser.role.name}`);
+          } else {
+            console.warn('No se encontró role.name en la respuesta');
+          }
+
+          this.router.navigateByUrl('/app/dashboard');
+        },
+        error: (err: any) => {
+          console.error('LOGIN ERROR:', err);
+          this.loginError = err.error?.description || 'Login failed';
+        },
       });
     }
   }

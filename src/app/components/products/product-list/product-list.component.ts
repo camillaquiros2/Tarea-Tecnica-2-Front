@@ -20,6 +20,8 @@ export class ProductListComponent {
   editProductPrice: number | null = null;
   editProductCategoryId: number | null = null;
 
+  public isSuperAdmin = localStorage.getItem('role') === 'SUPER_ADMIN';
+
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {

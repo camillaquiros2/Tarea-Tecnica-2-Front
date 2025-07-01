@@ -12,38 +12,48 @@ import { IUser } from '../../../interfaces';
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'
 })
-export class SigUpComponent {
-  public signUpError!: String;
-  public validSignup!: boolean;
+export class SignUpComponent {
+  public signUpError = '';
+  public validSignup = false;
+
   @ViewChild('name') nameModel!: NgModel;
   @ViewChild('lastname') lastnameModel!: NgModel;
   @ViewChild('email') emailModel!: NgModel;
   @ViewChild('password') passwordModel!: NgModel;
 
-  public user: IUser = {};
+  public user: Partial<IUser> = {
+    name: '',
+    lastname: '',
+    email: '',
+    password: ''
+  };
 
-  constructor(private router: Router, 
+  constructor(
+    private router: Router,
     private authService: AuthService
   ) {}
 
   public handleSignup(event: Event) {
     event.preventDefault();
-    if (!this.nameModel.valid) {
-      this.nameModel.control.markAsTouched();
-    }
-    if (!this.lastnameModel.valid) {
-      this.lastnameModel.control.markAsTouched();
-    }
-    if (!this.emailModel.valid) {
-      this.emailModel.control.markAsTouched();
-    }
-    if (!this.passwordModel.valid) {
-      this.passwordModel.control.markAsTouched();
-    }
-    if (this.emailModel.valid && this.passwordModel.valid) {
+
+    // Marca campos como tocados si no son válidos
+    [this.nameModel, this.lastnameModel, this.emailModel, this.passwordModel].forEach(model => {
+      if (!model.valid) model.control.markAsTouched();
+    });
+
+    // Si todos son válidos, envía signup
+    if (this.nameModel.valid && this.lastnameModel.valid && this.emailModel.valid && this.passwordModel.valid) {
       this.authService.signup(this.user).subscribe({
-        next: () => this.validSignup = true,
-        error: (err: any) => (this.signUpError = err.description),
+        next: () => {
+          this.validSignup = true;
+          this.signUpError = '';
+          console.log('User registered successfully');
+          setTimeout(() => this.router.navigateByUrl('/login'), 2000);
+        },
+        error: (err: any) => {
+          console.error('SIGNUP ERROR:', err);
+          this.signUpError = err.error?.description || err.error?.message || 'Registration failed';
+        }
       });
     }
   }

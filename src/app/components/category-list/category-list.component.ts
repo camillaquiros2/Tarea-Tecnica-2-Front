@@ -15,6 +15,8 @@ export class CategoryListComponent {
   editCategoryId: number | null = null;
   editCategoryName = '';
 
+  public isSuperAdmin = localStorage.getItem('role') === 'SUPER_ADMIN';
+
   constructor(private categoryService: CategoryService) {}
 
   ngOnInit(): void {

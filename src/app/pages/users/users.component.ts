@@ -40,6 +40,12 @@ export class UsersComponent {
   });
 
   constructor() {
+    const role = localStorage.getItem('role');
+    if (role !== 'SUPER_ADMIN') {
+      // Si no es SUPER_ADMIN, redirige a /products
+      window.location.href = '/products';
+    }
+
     this.userService.search.page = 1;
     this.userService.getAll();
   }
