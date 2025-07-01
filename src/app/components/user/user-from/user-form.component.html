@@ -21,14 +21,14 @@
   </div>
   <div class="mb-2">
     <label class="mb-1" for="lastname">Lastname*</label>
-    <input id="lastname" formControllastname="lastname" type="text" class="form-control">
+    <input id="lastname" formControlName="lastname" type="text" class="form-control">
     @if (userForm.controls['lastname'].invalid && (userForm.controls['lastname'].dirty || userForm.controls['lastname'].touched)) {
       <p class="text-danger my-1">Lastname is required</p>
     }
   </div>
   <div class="mb-2">
-    <label class="mb-1" for="name">Password*</label>
-    <input  id="password" formControlpassword="password" type="password" class="form-control">
+    <label class="mb-1" for="password">Password*</label>
+    <input id="password" formControlName="password" type="password" class="form-control">
     @if (userForm.controls['password'].invalid && (userForm.controls['password'].dirty || userForm.controls['password'].touched)) {
       <p class="text-danger my-1">Password is required</p>
     }

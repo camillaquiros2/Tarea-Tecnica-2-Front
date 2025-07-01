@@ -8,6 +8,7 @@ import { UserService } from '../../services/user.service';
 import { ModalService } from '../../services/modal.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { IUser } from '../../interfaces';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-users',
@@ -17,7 +18,8 @@ import { IUser } from '../../interfaces';
     PaginationComponent,
     ModalComponent,
     LoaderComponent,
-    UserFormComponent
+    UserFormComponent,
+    AsyncPipe
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'
@@ -27,14 +29,15 @@ export class UsersComponent {
   public modalService: ModalService = inject(ModalService);
   @ViewChild('addUsersModal') public addUsersModal: any;
   public fb: FormBuilder = inject(FormBuilder);
+
   userForm = this.fb.group({
     id: [''],
-    email: ['', Validators.required, Validators.email],
+    email: ['', [Validators.required, Validators.email]],
     name: ['', Validators.required],
     lastname: ['', Validators.required],
     password: ['', Validators.required],
     updatedAt: ['', Validators.required],
-  })
+  });
 
   constructor() {
     this.userService.search.page = 1;
@@ -47,11 +50,14 @@ export class UsersComponent {
   }
 
   callEdition(user: IUser) {
-    this.userForm.controls['id'].setValue(user.id ? JSON.stringify(user.id) : '');
-    this.userForm.controls['email'].setValue(user.email ? user.email : '');
-    this.userForm.controls['name'].setValue(user.name ? JSON.stringify(user.name) : '');
-    this.userForm.controls['lastname'].setValue(user.lastname ? JSON.stringify(user.lastname) : '');
-    this.userForm.controls['password'].setValue(user.password ? JSON.stringify(user.password) : '');
+    this.userForm.patchValue({
+      id: user.id ? String(user.id) : '',
+      email: user.email,
+      name: user.name,
+      lastname: user.lastname,
+      password: user.password,
+      updatedAt: user.updatedAt
+    });
     this.modalService.displayModal('md', this.addUsersModal);
   }
 
@@ -59,5 +65,4 @@ export class UsersComponent {
     this.userService.update(user);
     this.modalService.closeAll();
   }
-  
 }
