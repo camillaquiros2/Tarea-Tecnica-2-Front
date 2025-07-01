@@ -34,7 +34,7 @@
           </div>
         </td>
         <td>
-          <div *ngIf="editProductId !== prod.id">{{prod.categoryId}}</div>
+          <div *ngIf="editProductId !== prod.id">{{prod.category?.id}}</div>
           <div *ngIf="editProductId === prod.id">
             <input type="number" [(ngModel)]="editProductCategoryId" class="form-control">
           </div>

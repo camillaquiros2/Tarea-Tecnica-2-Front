@@ -14,6 +14,7 @@ export class ProductListComponent {
   newProductName = '';
   newProductPrice: number | null = null;
   newProductCategoryId: number | null = null;
+
   editProductId: number | null = null;
   editProductName = '';
   editProductPrice: number | null = null;
@@ -34,7 +35,7 @@ export class ProductListComponent {
     const product: Product = {
       name: this.newProductName,
       price: this.newProductPrice,
-      categoryId: this.newProductCategoryId
+      category: { id: this.newProductCategoryId }
     };
     this.productService.createProduct(product).subscribe(() => {
       this.newProductName = '';
@@ -48,7 +49,7 @@ export class ProductListComponent {
     this.editProductId = product.id!;
     this.editProductName = product.name;
     this.editProductPrice = product.price;
-    this.editProductCategoryId = product.categoryId;
+    this.editProductCategoryId = product.category.id;
   }
 
   updateProduct(): void {
@@ -56,7 +57,7 @@ export class ProductListComponent {
     const product: Product = {
       name: this.editProductName,
       price: this.editProductPrice,
-      categoryId: this.editProductCategoryId
+      category: { id: this.editProductCategoryId }
     };
     this.productService.updateProduct(this.editProductId, product).subscribe(() => {
       this.editProductId = null;

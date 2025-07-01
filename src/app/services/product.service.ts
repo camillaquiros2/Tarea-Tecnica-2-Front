@@ -6,14 +6,16 @@ export interface Product {
   id?: number;
   name: string;
   price: number;
-  categoryId: number;
+  category: {
+    id: number;
+  };
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'api/products';
+  private apiUrl = '/api/products';
 
   constructor(private http: HttpClient) {}
 
@@ -21,11 +23,11 @@ export class ProductService {
     return this.http.get<Product[]>(this.apiUrl);
   }
 
-  createProduct(product: Product): Observable<Product> {
+  createProduct(product: { name: string; price: number; category: { id: number } }): Observable<Product> {
     return this.http.post<Product>(this.apiUrl, product);
   }
 
-  updateProduct(id: number, product: Product): Observable<Product> {
+  updateProduct(id: number, product: { name: string; price: number; category: { id: number } }): Observable<Product> {
     return this.http.put<Product>(`${this.apiUrl}/${id}`, product);
   }
 
