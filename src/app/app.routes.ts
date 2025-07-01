@@ -12,6 +12,8 @@ import { IRoleType } from './interfaces';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { GamesComponent } from './pages/games/games.component';
 import { OrdersComponent } from './pages/orders/orders.component';
+import { CategoryListComponent } from './components/category-list/category-list.component';
+import { ProductListComponent } from './components/products/product-list/product-list.component';
 
 export const routes: Routes = [
   {
@@ -107,7 +109,33 @@ export const routes: Routes = [
           name: 'orders',
           showInSidebar: true
         }
-      }
+      },
+      {
+        path: 'categories',
+        component: CategoryListComponent,
+        data: { 
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin,
+            IRoleType.user,
+          ],
+          name: 'categories',
+          showInSidebar: true
+        }
+      },
+      {
+        path: 'products',
+        component: ProductListComponent,
+        data: { 
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin,
+            IRoleType.user,
+          ],
+          name: 'products',
+          showInSidebar: true
+        }
+      },
     ],
   },
 ];
